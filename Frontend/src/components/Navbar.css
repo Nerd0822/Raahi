@@ -1,0 +1,17 @@
+.navbar {
+	display: flex;
+	justify-content: space-between;
+	align-items: center;
+	padding: 1rem 2rem;
+}
+
+.navbar-logo {
+	font-size: 1.5rem;
+	font-weight: 700;
+	color: var(--accent);
+}
+
+.navbar a {
+	color: var(--text);
+	text-decoration: none;
+}

@@ -1,0 +1,31 @@
+.hero {
+	text-align: center;
+	padding: 5rem 1.5rem;
+	max-width: 700px;
+	margin: 0 auto;
+}
+
+.hero h1 {
+	font-size: 2.5rem;
+	margin-bottom: 1rem;
+}
+
+.hero p {
+	font-size: 1.1rem;
+	margin-bottom: 2rem;
+	opacity: 0.8;
+}
+
+.hero-button {
+	background: var(--accent);
+	color: white;
+	border: none;
+	padding: 0.8rem 2rem;
+	font-size: 1rem;
+	border-radius: 999px;
+	cursor: pointer;
+}
+
+.hero-button:hover {
+	opacity: 0.9;
+}
