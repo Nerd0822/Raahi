@@ -29,3 +29,15 @@
 .hero-button:hover {
 	opacity: 0.9;
 }
+
+.hero-api {
+	margin-top: 1rem;
+	font-size: 0.85rem;
+	font-family: monospace;
+	opacity: 0.6;
+}
+
+.hero-api-error {
+	color: #e5484d;
+	opacity: 1;
+}
