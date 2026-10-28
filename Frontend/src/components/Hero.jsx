@@ -1,31 +1,40 @@
 import { useEffect, useState } from 'react';
+import anime from 'animejs';
 import './Hero.css';
 
+const WORDS = ['Routes', 'Buses', 'Stays', 'Food'];
+
 function Hero() {
-	const [apiMessage, setApiMessage] = useState(null);
-	const [apiError, setApiError] = useState(false);
+	const [word, setWord] = useState(0);
 
 	useEffect(() => {
-		fetch('/api/home/')
-			.then((res) => (res.ok ? res.json() : Promise.reject(res)))
-			.then((data) => setApiMessage(data.message))
-			.catch(() => setApiError(true));
+		const timer = setInterval(() => setWord((i) => (i + 1) % WORDS.length), 2200);
+		return () => clearInterval(timer);
+	}, []);
+
+	useEffect(() => {
+		if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+		anime({
+			targets: '[data-reveal]',
+			opacity: [0, 1],
+			translateY: [16, 0],
+			delay: anime.stagger(110),
+			duration: 520,
+			easing: 'easeOutExpo',
+		});
 	}, []);
 
 	return (
 		<section className="hero">
-			<h1>Your travel buddy, always one step ahead</h1>
-			<p>
-				Routes, buses, hotels and food spots, plus an AI that chats with
-				you while you explore.
-			</p>
-			<button className="hero-button">Get started</button>
-			<p className={apiError ? 'hero-api hero-api-error' : 'hero-api'}>
-				{apiError
-					? '⚠️ Backend unreachable'
-					: apiMessage
-						? `Backend says: "${apiMessage}"`
-						: 'Pinging the backend…'}
+			<h1 data-reveal>
+				Your travel buddy, one step ahead on{' '}
+				<span className="word" key={word}>
+					{WORDS[word]}
+				</span>
+			</h1>
+			<p data-reveal>
+				Compare buses, trains, stays and food — with an AI guide that plans
+				while you travel, across India and beyond.
 			</p>
 		</section>
 	);

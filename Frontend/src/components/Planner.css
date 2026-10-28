@@ -1,0 +1,142 @@
+.rail {
+	display: flex;
+	gap: 0.6rem;
+	margin-bottom: 1rem;
+	overflow-x: auto;
+	padding-bottom: 0.25rem;
+	scrollbar-width: none;
+	-webkit-overflow-scrolling: touch;
+}
+
+.rail::-webkit-scrollbar {
+	display: none;
+}
+
+.rail-btn {
+	flex: 0 0 auto;
+	width: 100px;
+	padding: 0;
+	background: rgba(255, 255, 255, 0.9);
+	border: 2px solid var(--border);
+	border-radius: 12px;
+	overflow: hidden;
+	cursor: pointer;
+	opacity: 0.72;
+	transition: border-color 0.2s ease, opacity 0.2s ease;
+}
+
+.rail-btn img {
+	display: block;
+	width: 100%;
+	height: 56px;
+	object-fit: cover;
+}
+
+.rail-btn span {
+	display: block;
+	padding: 0.35rem 0.4rem;
+	font-size: 0.72rem;
+	color: var(--ink);
+	white-space: nowrap;
+	overflow: hidden;
+	text-overflow: ellipsis;
+}
+
+.rail-btn.is-active {
+	border-color: var(--primary);
+	opacity: 1;
+}
+
+.plan {
+	display: grid;
+	background: #fff;
+	border: 1px solid var(--border);
+	border-radius: 16px;
+	overflow: hidden;
+	box-shadow: 0 12px 30px rgba(20, 41, 62, 0.07);
+}
+
+.media {
+	position: relative;
+	height: 210px;
+}
+
+/* soft blue wash unifies every photo with the theme */
+.media::after {
+	content: '';
+	position: absolute;
+	inset: 0;
+	background: linear-gradient(
+		160deg,
+		rgba(21, 96, 189, 0.16),
+		rgba(10, 32, 58, 0.34)
+	);
+}
+
+.media img {
+	display: block;
+	width: 100%;
+	height: 100%;
+	object-fit: cover;
+}
+
+.rows {
+	padding: 1.15rem 1.25rem;
+	display: grid;
+	gap: 1rem;
+}
+
+.row {
+	display: flex;
+	gap: 0.8rem;
+}
+
+.row .num {
+	flex: 0 0 auto;
+	display: grid;
+	place-items: center;
+	width: 30px;
+	height: 30px;
+	border-radius: 8px;
+	background: var(--tint);
+	color: var(--primary);
+	font-size: 0.75rem;
+	font-weight: 700;
+	font-variant-numeric: tabular-nums;
+}
+
+.row strong {
+	display: block;
+	font-size: 0.95rem;
+}
+
+.row p {
+	margin-top: 0.2rem;
+	font-size: 0.88rem;
+	color: var(--muted);
+}
+
+@media (min-width: 640px) {
+	.rail-btn {
+		width: 120px;
+	}
+
+	.rail-btn img {
+		height: 64px;
+	}
+
+	.plan {
+		grid-template-columns: 2fr 3fr;
+	}
+
+	.media {
+		height: 100%;
+		min-height: 360px;
+	}
+
+	.rows {
+		padding: 1.75rem;
+		gap: 1.25rem;
+		align-content: center;
+	}
+}

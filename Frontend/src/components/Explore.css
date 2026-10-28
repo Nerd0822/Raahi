@@ -1,0 +1,268 @@
+/* Google-Maps-like full-height layout; overlays sit above Leaflet panes. */
+.explore {
+	flex: 1;
+	display: flex;
+	min-height: 0;
+	position: relative;
+	overflow: hidden;
+}
+
+.map-wrap {
+	position: relative;
+	flex: 1;
+	min-width: 0;
+}
+
+.map {
+	position: absolute;
+	inset: 0;
+	background: var(--tint);
+}
+
+/* ── top-left card: Search/Directions tabs, fields, results ─────────────── */
+.overlay-top {
+	position: absolute;
+	top: 0.75rem;
+	left: 0.75rem;
+	z-index: 1000;
+	width: min(360px, calc(100% - 1.5rem));
+	display: flex;
+	flex-direction: column;
+	gap: 0.4rem;
+}
+
+.card {
+	background: #fff;
+	border-radius: 14px;
+	box-shadow: 0 4px 14px rgba(20, 41, 62, 0.18);
+	padding: 0.5rem;
+	display: flex;
+	flex-direction: column;
+	gap: 0.5rem;
+}
+
+.tabs {
+	display: flex;
+	background: var(--tint);
+	border-radius: 11px;
+	padding: 3px;
+	gap: 3px;
+}
+
+.tabs button {
+	flex: 1;
+	min-height: 40px;
+	border: none;
+	background: transparent;
+	color: var(--muted);
+	font-weight: 600;
+	font-size: 0.85rem;
+	border-radius: 9px;
+	cursor: pointer;
+	transition: background 0.15s ease, color 0.15s ease;
+}
+
+.tabs button.on {
+	background: var(--primary);
+	color: #fff;
+}
+
+.row {
+	display: flex;
+	align-items: center;
+	gap: 0.4rem;
+}
+
+.rows {
+	display: flex;
+	flex-direction: column;
+	gap: 0.35rem;
+}
+
+.ab {
+	width: 22px;
+	height: 22px;
+	flex: 0 0 auto;
+	display: inline-flex;
+	align-items: center;
+	justify-content: center;
+	border-radius: 50%;
+	color: #fff;
+	font-size: 0.7rem;
+	font-weight: 700;
+}
+
+.ab.a {
+	background: var(--primary);
+}
+
+.ab.b {
+	background: var(--primary-dark);
+}
+
+.field {
+	flex: 1;
+	min-width: 0;
+	min-height: 44px;
+	padding: 0 0.8rem;
+	border: 1.5px solid transparent;
+	border-radius: 10px;
+	background: var(--bg);
+	color: var(--ink);
+	font-size: 0.92rem;
+}
+
+.field:focus {
+	border-color: var(--primary);
+	outline: none;
+	background: #fff;
+}
+
+.go {
+	flex: 0 0 auto;
+	min-height: 44px;
+	padding: 0 0.95rem;
+	border: none;
+	border-radius: 10px;
+	background: var(--primary);
+	color: #fff;
+	font-weight: 600;
+	font-size: 0.85rem;
+	cursor: pointer;
+	transition: background 0.15s ease;
+}
+
+.go:hover {
+	background: var(--primary-dark);
+}
+
+.go:disabled,
+.icon:disabled {
+	opacity: 0.5;
+	cursor: default;
+}
+
+.icon {
+	flex: 0 0 44px;
+	width: 44px;
+	height: 44px;
+	border: none;
+	border-radius: 10px;
+	background: var(--primary);
+	color: #fff;
+	font-size: 1.05rem;
+	cursor: pointer;
+	display: inline-flex;
+	align-items: center;
+	justify-content: center;
+	transition: background 0.15s ease;
+}
+
+.icon:hover {
+	background: var(--primary-dark);
+}
+
+/* quiet reset inside the directions card */
+.clear {
+	align-self: flex-end;
+	min-height: 44px;
+	padding: 0 0.6rem;
+	border: none;
+	background: none;
+	color: var(--primary);
+	font-size: 0.8rem;
+	font-weight: 600;
+	cursor: pointer;
+	border-radius: 8px;
+}
+
+.clear:hover {
+	background: var(--tint);
+}
+
+/* suggestion list, one card under the input card */
+.search-results {
+	position: absolute;
+	top: calc(100% - 0.1rem);
+	left: 0;
+	right: 0;
+	list-style: none;
+	background: #fff;
+	border-radius: 14px;
+	box-shadow: 0 8px 20px rgba(20, 41, 62, 0.2);
+	max-height: 280px;
+	overflow-y: auto;
+	padding: 0.25rem;
+}
+
+.search-results li {
+	padding: 0.55rem 0.75rem;
+	min-height: 44px;
+	display: flex;
+	align-items: center;
+	font-size: 0.85rem;
+	color: var(--ink);
+	cursor: pointer;
+	border-radius: 9px;
+}
+
+.search-results li:hover {
+	background: var(--tint);
+}
+
+/* ── bottom-left: hybrid blend slider ───────────────────────────────────── */
+.blend {
+	position: absolute;
+	left: 0.75rem;
+	bottom: 3.4rem; /* clear of the bottom-right zoom/attribution strip */
+	z-index: 1000;
+	display: flex;
+	align-items: center;
+	gap: 0.5rem;
+	background: #fff;
+	border-radius: 999px;
+	padding: 0.45rem 0.8rem;
+	box-shadow: 0 2px 8px rgba(20, 41, 62, 0.15);
+	font-size: 0.75rem;
+	color: var(--muted);
+}
+
+.blend input[type='range'] {
+	width: 110px;
+	accent-color: var(--primary);
+}
+
+/* ── Leaflet widget theme ───────────────────────────────────────────────── */
+/* route panel: top-right of the map area, clear of the chat drawer edge */
+.leaflet-top.leaflet-right .leaflet-routing-container {
+	margin-right: 0.6rem;
+	margin-top: 0.6rem;
+}
+
+.leaflet-routing-container {
+	font-family: inherit;
+	border-radius: 14px;
+	box-shadow: 0 6px 18px rgba(20, 41, 62, 0.15);
+	max-height: 45vh;
+}
+
+/* nothing to route yet: keep the control completely out of the way */
+.leaflet-routing-container.lrm-empty {
+	display: none;
+}
+
+/* collapsed after use: a clean circular white control */
+.leaflet-routing-container.leaflet-routing-container-hide {
+	background: #fff;
+	border-radius: 50%;
+	box-shadow: 0 2px 8px rgba(20, 41, 62, 0.25);
+}
+
+.leaflet-routing-container h2 {
+	font-size: 0.95rem;
+	color: var(--ink);
+}
+
+.leaflet-control-attribution {
+	font-size: 0.65rem;
+}

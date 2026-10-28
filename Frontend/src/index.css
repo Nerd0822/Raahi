@@ -1,7 +1,11 @@
 :root {
-  --bg: #fffaf3;
-  --text: #2d2a26;
-  --accent: #ff8a5c;
+  --bg: #f5f9fd;
+  --ink: #14293e;
+  --muted: #5a7186;
+  --primary: #1560bd;
+  --primary-dark: #0d47a1;
+  --tint: #eaf2fb;
+  --border: #d9e6f3;
 }
 
 * {
@@ -10,8 +14,83 @@
   padding: 0;
 }
 
+html {
+  scroll-behavior: smooth;
+  scroll-padding-top: 4.25rem;
+}
+
 body {
   font-family: system-ui, sans-serif;
   background: var(--bg);
-  color: var(--text);
+  color: var(--ink);
+  -webkit-tap-highlight-color: transparent;
+}
+
+h1,
+h2 {
+  letter-spacing: -0.02em;
+}
+
+/* shared layout */
+.section {
+  max-width: 1050px;
+  margin: 0 auto;
+  padding: 3.5rem 1.25rem;
+}
+
+.section h2 {
+  font-size: clamp(1.5rem, 4vw, 2rem);
+  text-align: center;
+  margin-bottom: 2rem;
+}
+
+/* shared buttons */
+.button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 44px;
+  padding: 0.85rem 1.75rem;
+  background: var(--primary);
+  color: #fff;
+  font-size: 1rem;
+  font-weight: 600;
+  border-radius: 999px;
+  text-decoration: none;
+  transition: background 0.15s ease, transform 0.15s ease;
+}
+
+.button:hover {
+  background: var(--primary-dark);
+}
+
+.button:active {
+  transform: scale(0.96);
+}
+
+.button.small {
+  min-height: 40px;
+  padding: 0.5rem 1.1rem;
+  font-size: 0.9rem;
+}
+
+/* app shell: flex column so Explore can fill the viewport below the navbar */
+#top {
+	display: flex;
+	flex-direction: column;
+	min-height: 100dvh;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
 }

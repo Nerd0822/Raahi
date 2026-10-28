@@ -1,43 +1,45 @@
 .hero {
 	text-align: center;
-	padding: 5rem 1.5rem;
-	max-width: 700px;
-	margin: 0 auto;
+	padding: 6.5rem 1.25rem 7rem;
+	color: #fff;
+	/* navy veil over a real photo keeps every word readable */
+	background:
+		linear-gradient(180deg, rgba(10, 32, 58, 0.72), rgba(13, 47, 82, 0.82)),
+		url('/places/taj-mahal.jpg') center / cover no-repeat;
 }
 
 .hero h1 {
-	font-size: 2.5rem;
-	margin-bottom: 1rem;
+	font-size: clamp(2rem, 6vw, 3rem);
+	max-width: 640px;
+	margin: 0 auto 1rem;
 }
 
 .hero p {
-	font-size: 1.1rem;
-	margin-bottom: 2rem;
-	opacity: 0.8;
+	max-width: 520px;
+	margin: 0 auto 0.5rem;
+	color: rgba(255, 255, 255, 0.85);
 }
 
-.hero-button {
-	background: var(--accent);
-	color: white;
-	border: none;
-	padding: 0.8rem 2rem;
-	font-size: 1rem;
-	border-radius: 999px;
-	cursor: pointer;
+.word {
+	display: inline-block;
+	color: #9ec9ff;
+	min-width: 3.6em;
+	text-align: left;
+	animation: word-in 2.2s ease-in-out;
 }
 
-.hero-button:hover {
-	opacity: 0.9;
-}
-
-.hero-api {
-	margin-top: 1rem;
-	font-size: 0.85rem;
-	font-family: monospace;
-	opacity: 0.6;
-}
-
-.hero-api-error {
-	color: #e5484d;
-	opacity: 1;
+@keyframes word-in {
+	from {
+		opacity: 0;
+		transform: translateY(6px);
+	}
+	10%,
+	85% {
+		opacity: 1;
+		transform: none;
+	}
+	to {
+		opacity: 0;
+		transform: translateY(-6px);
+	}
 }

@@ -1,0 +1,136 @@
+/* Right-hand collapsible drawer on the Explore layout. */
+.chat {
+	flex: 0 0 320px;
+	display: flex;
+	flex-direction: column;
+	min-height: 0;
+	background: #fff;
+	border-left: 1px solid var(--border);
+}
+
+.chat.collapsed {
+	display: none;
+}
+
+.chat header {
+	display: flex;
+	justify-content: space-between;
+	align-items: center;
+	padding: 0.6rem 1rem;
+	background: var(--primary);
+	color: #fff;
+}
+
+.chat header button {
+	background: none;
+	border: none;
+	color: #fff;
+	font-size: 1.4rem;
+	line-height: 1;
+	cursor: pointer;
+	min-height: 44px;
+	min-width: 44px;
+}
+
+.chat-list {
+	list-style: none;
+	flex: 1;
+	overflow-y: auto;
+	padding: 1rem;
+	display: flex;
+	flex-direction: column;
+	gap: 0.6rem;
+	background: var(--bg);
+}
+
+.chat .ctx {
+	padding: 0.45rem 1rem;
+	background: var(--tint);
+	color: var(--primary);
+	font-size: 0.75rem;
+	font-weight: 600;
+}
+
+.chat-list li {
+	max-width: 85%;
+	padding: 0.55rem 0.8rem;
+	border-radius: 14px;
+	font-size: 0.88rem;
+	line-height: 1.35;
+}
+
+.chat-list .user {
+	align-self: flex-end;
+	background: var(--primary);
+	color: #fff;
+	border-bottom-right-radius: 4px;
+}
+
+.chat-list .ai {
+	align-self: flex-start;
+	background: #fff;
+	border: 1px solid var(--border);
+	color: var(--ink);
+	border-bottom-left-radius: 4px;
+}
+
+.chat form {
+	display: flex;
+	gap: 0.5rem;
+	padding: 0.75rem;
+	border-top: 1px solid var(--border);
+}
+
+.chat input {
+	flex: 1;
+	min-width: 0;
+	min-height: 44px;
+	padding: 0 0.8rem;
+	border: 1.5px solid var(--border);
+	border-radius: 999px;
+	font-size: 0.9rem;
+	color: var(--ink);
+	background: #fff;
+}
+
+.chat input:focus {
+	border-color: var(--primary);
+	outline: none;
+}
+
+/* floating re-open button while the drawer is collapsed — bottom-right,
+   stacked above the zoom/attribution strip, well clear of the routing
+   panel in the top-right corner */
+.chat-fab {
+	position: absolute;
+	bottom: 7.5rem; /* clear of the zoom + attribution strip below */
+	right: 0.75rem;
+	z-index: 1000;
+	min-height: 44px;
+	padding: 0 1rem;
+	border: none;
+	border-radius: 999px;
+	background: var(--primary);
+	color: #fff;
+	font-weight: 600;
+	box-shadow: 0 4px 14px rgba(21, 96, 189, 0.35);
+	cursor: pointer;
+	pointer-events: auto;
+}
+
+.chat-fab.hidden {
+	display: none;
+}
+
+/* narrow screens: drawer overlays the map instead of squeezing it */
+@media (max-width: 700px) {
+	.chat {
+		position: absolute;
+		top: 0;
+		right: 0;
+		bottom: 0;
+		z-index: 1200;
+		width: min(320px, 88%);
+		box-shadow: -8px 0 24px rgba(20, 41, 62, 0.2);
+	}
+}

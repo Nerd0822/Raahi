@@ -1,17 +1,98 @@
 .navbar {
+	position: sticky;
+	top: 0;
+	z-index: 1100; /* stays above Leaflet panes/controls (≤1000) */
 	display: flex;
-	justify-content: space-between;
 	align-items: center;
-	padding: 1rem 2rem;
+	justify-content: space-between;
+	padding: 0.5rem 1.25rem;
+	background: rgba(245, 249, 253, 0.85);
+	backdrop-filter: blur(10px);
+	-webkit-backdrop-filter: blur(10px);
+	border-bottom: 1px solid var(--border);
 }
 
-.navbar-logo {
-	font-size: 1.5rem;
+.logo {
+	min-height: 44px;
+	border: none;
+	background: none;
+	padding: 0;
 	font-weight: 700;
-	color: var(--accent);
+	font-size: 1.25rem;
+	color: var(--primary);
+	text-decoration: none;
+	cursor: pointer;
 }
 
-.navbar a {
-	color: var(--text);
-	text-decoration: none;
+.nav-right {
+	display: flex;
+	align-items: center;
+	gap: 0.5rem;
+}
+
+.nav-links {
+	display: flex;
+	gap: 0.25rem;
+}
+
+.nav-links button {
+	min-height: 44px;
+	padding: 0 0.85rem;
+	border: none;
+	background: none;
+	color: var(--muted);
+	font-weight: 600;
+	font-size: 0.9rem;
+	border-radius: 999px;
+	cursor: pointer;
+}
+
+.nav-links button:hover {
+	background: var(--tint);
+}
+
+.nav-links button.active {
+	color: var(--primary);
+	background: var(--tint);
+}
+
+.avatar {
+	width: 44px;
+	height: 44px;
+	border-radius: 50%;
+	border: none;
+	background: var(--primary);
+	color: #fff;
+	font-weight: 700;
+	font-size: 1rem;
+	cursor: pointer;
+	overflow: hidden;
+	padding: 0;
+}
+
+.avatar img {
+	width: 100%;
+	height: 100%;
+	object-fit: cover;
+	display: block;
+}
+
+.avatar:hover {
+	background: var(--primary-dark);
+}
+
+/* three links + logo + avatar must still fit a 360px phone */
+@media (max-width: 520px) {
+	.navbar {
+		padding: 0.5rem 0.75rem;
+	}
+
+	.nav-right {
+		gap: 0.3rem;
+	}
+
+	.nav-links button {
+		padding: 0 0.55rem;
+		font-size: 0.85rem;
+	}
 }

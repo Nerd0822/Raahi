@@ -1,0 +1,120 @@
+.login-overlay {
+	position: fixed;
+	inset: 0;
+	z-index: 50;
+	display: grid;
+	place-items: center;
+	padding: 1.25rem;
+	background: rgba(10, 32, 58, 0.6);
+	backdrop-filter: blur(6px);
+	-webkit-backdrop-filter: blur(6px);
+}
+
+.login-card {
+	position: relative;
+	width: min(380px, 100%);
+	background: #fff;
+	border-radius: 16px;
+	padding: 2rem 1.75rem 1.75rem;
+	box-shadow: 0 20px 50px rgba(10, 32, 58, 0.35);
+	animation: login-in 0.25s ease-out;
+}
+
+.login-logo {
+	color: var(--primary);
+	font-weight: 700;
+}
+
+.login-card h2 {
+	font-size: 1.25rem;
+	margin-bottom: 1.25rem;
+}
+
+.login-card label {
+	display: block;
+	text-align: left;
+	font-size: 0.85rem;
+	font-weight: 600;
+	margin-bottom: 0.9rem;
+}
+
+.login-card input {
+	display: block;
+	width: 100%;
+	min-height: 46px;
+	margin-top: 0.3rem;
+	padding: 0.6rem 0.8rem;
+	border: 1.5px solid var(--border);
+	border-radius: 10px;
+	background: var(--bg);
+	font-size: 1rem;
+	color: var(--ink);
+}
+
+.login-card input:focus {
+	border-color: var(--primary);
+	outline: none;
+	box-shadow: 0 0 0 3px var(--tint);
+}
+
+.login-card .button {
+	width: 100%;
+	margin-top: 0.4rem;
+}
+
+.login-switch {
+	margin-top: 1rem;
+	text-align: center;
+	font-size: 0.85rem;
+	color: var(--muted);
+}
+
+.login-switch button {
+	display: inline-block;
+	min-height: 44px;
+	padding: 0.25rem 0.35rem;
+	border: none;
+	background: none;
+	color: var(--primary);
+	font-size: 0.85rem;
+	font-weight: 600;
+	cursor: pointer;
+}
+
+.login-close {
+	position: absolute;
+	top: 0.25rem;
+	right: 0.25rem;
+	width: 44px;
+	height: 44px;
+	border: none;
+	background: none;
+	border-radius: 50%;
+	color: var(--muted);
+	font-size: 1.5rem;
+	cursor: pointer;
+}
+
+.login-close:hover {
+	background: var(--tint);
+	color: var(--ink);
+}
+
+@keyframes login-in {
+	from {
+		opacity: 0;
+		transform: translateY(10px) scale(0.98);
+	}
+	to {
+		opacity: 1;
+		transform: none;
+	}
+}
+
+.login-error {
+	margin: -0.4rem 0 0.4rem;
+	text-align: left;
+	font-size: 0.85rem;
+	font-weight: 600;
+	color: #b3341f;
+}
