@@ -10,6 +10,7 @@ don't hit the network again. Weather expires quickly; search and Wikipedia
 last longer.
 """
 
+import hashlib
 import json
 import logging
 import urllib.error
@@ -406,7 +407,9 @@ def _usable(name, data):
 
 
 def _cache_key(name, query):
-    return f"tool:{name}:{query}"
+    # Hash the free text: Django warns about spaces/colons in cache keys, and
+    # hashing also keeps long queries inside Redis/memcached limits.
+    return f"tool:{name}:{hashlib.sha256(query.encode()).hexdigest()}"
 
 
 def _cache_get(key):

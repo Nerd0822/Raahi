@@ -653,6 +653,52 @@ class LLMClientTest(SimpleTestCase):
     @patch.dict("os.environ", {"LLM_MODEL": "test-model"})
     @patch("api.llm.execute_tool", return_value={"ok": True})
     @patch("api.llm.urllib.request.urlopen")
+    def test_stray_tool_call_after_limit_gets_another_round(self, urlopen, execute):
+        def tool_response(i):
+            return {
+                "choices": [
+                    {
+                        "message": {
+                            "content": "",
+                            "tool_calls": [
+                                {
+                                    "id": f"call_{i}",
+                                    "type": "function",
+                                    "function": {
+                                        "name": "get_weather",
+                                        "arguments": json.dumps(
+                                            {"location": f"City {i}"}
+                                        ),
+                                    },
+                                }
+                            ],
+                        }
+                    }
+                ]
+            }
+
+        responses = [tool_response(i) for i in range(3)]
+        responses.append(tool_response(3))
+        responses.append(
+            {"choices": [{"message": {"content": "Recovered."}}]}
+        )
+        urlopen.return_value.__enter__.return_value.read.side_effect = [
+            json.dumps(response).encode() for response in responses
+        ]
+
+        reply = llm.chat_reply("Plan around the weather.")
+        self.assertEqual(reply, "Recovered.")
+        self.assertEqual(urlopen.call_count, 5)
+        self.assertEqual(execute.call_count, 3)
+
+        nudge_body = json.loads(urlopen.call_args_list[4].args[0].data)
+        self.assertNotIn("tools", nudge_body)
+        self.assertEqual(nudge_body["messages"][-1]["role"], "user")
+        self.assertIn("Tool budget exhausted", nudge_body["messages"][-1]["content"])
+
+    @patch.dict("os.environ", {"LLM_MODEL": "test-model"})
+    @patch("api.llm.execute_tool", return_value={"ok": True})
+    @patch("api.llm.urllib.request.urlopen")
     def test_duplicate_tool_calls_run_once(self, urlopen, execute):
         call = {
             "id": "call_1",

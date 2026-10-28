@@ -139,14 +139,6 @@ def _complete(messages, temperature, timeout, json_mode=False, tools=None):
             if not content:
                 raise LLMError("provider returned an empty reply")
             return content
-        if not allow_tools:
-            # Tools were omitted from this request, so a compliant server
-            # cannot call one. Keep any final text that came alongside the
-            # stray calls instead of failing the whole request.
-            content = (message.get("content") or "").strip()
-            if content:
-                return content
-            raise LLMError("model requested tools after the tool limit")
 
         clean_calls = []
         for index, call in enumerate(calls):
@@ -161,6 +153,42 @@ def _complete(messages, temperature, timeout, json_mode=False, tools=None):
                     },
                 }
             )
+
+        if not allow_tools:
+            # Some providers return tool calls even when `tools` is omitted.
+            # Feed the refusal back and ask for a final answer instead of
+            # failing the whole request.
+            content = (message.get("content") or "").strip()
+            if content:
+                return content
+            conversation.append(
+                {
+                    "role": "assistant",
+                    "content": "",
+                    "tool_calls": clean_calls,
+                }
+            )
+            for call in clean_calls:
+                conversation.append(
+                    {
+                        "role": "tool",
+                        "tool_call_id": call["id"],
+                        "content": json.dumps(
+                            {"error": "tool limit reached; answer with what you have"}
+                        ),
+                    }
+                )
+            conversation.append(
+                {
+                    "role": "user",
+                    "content": (
+                        "Tool budget exhausted. Answer now using the information "
+                        "already gathered. Do not call tools."
+                    ),
+                }
+            )
+            continue
+
         conversation.append(
             {
                 "role": "assistant",
