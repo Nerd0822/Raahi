@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { authed } from '../auth';
 import './Profile.css';
 
@@ -9,6 +9,8 @@ function Profile({ user, onBack, onLogout, onSaved }) {
 	const [preview, setPreview] = useState(user.profile_picture || '');
 	const [file, setFile] = useState(null);
 	const [status, setStatus] = useState('');
+	const inputRef = useRef(null);
+	const previewUrl = useRef('');
 
 	const initial = (user.username || '?').charAt(0).toUpperCase();
 	const joined = user.date_joined
@@ -18,20 +20,48 @@ function Profile({ user, onBack, onLogout, onSaved }) {
 			})
 		: null;
 
+	const dropPreview = () => {
+		if (previewUrl.current) {
+			URL.revokeObjectURL(previewUrl.current);
+			previewUrl.current = '';
+		}
+	};
+
+	useEffect(() => dropPreview, []);
+
+	const resetSelection = (message) => {
+		dropPreview();
+		setFile(null);
+		setPreview(user.profile_picture || '');
+		if (inputRef.current) inputRef.current.value = '';
+		setStatus(message);
+	};
+
 	const choose = (e) => {
 		const f = e.target.files?.[0];
 		if (!f) return;
 		if (!f.type.startsWith('image/')) {
-			setStatus('Please choose an image file.');
+			resetSelection('Please choose an image file.');
 			return;
 		}
 		if (f.size > 2 * 1024 * 1024) {
-			setStatus('Image must be under 2 MB.');
+			resetSelection('Image must be under 2 MB.');
 			return;
 		}
+		dropPreview();
+		previewUrl.current = URL.createObjectURL(f);
 		setFile(f);
-		setPreview(URL.createObjectURL(f));
+		setPreview(previewUrl.current);
 		setStatus('');
+	};
+
+	const saved = (updated) => {
+		dropPreview();
+		setFile(null);
+		setPreview(updated.profile_picture || '');
+		if (inputRef.current) inputRef.current.value = '';
+		onSaved(updated);
+		setStatus('Saved');
 	};
 
 	const save = async (e) => {
@@ -44,25 +74,54 @@ function Profile({ user, onBack, onLogout, onSaved }) {
 		if (file) fd.append('profile_picture', file);
 		const updated = await authed('/api/auth/me/', { method: 'PATCH', body: fd });
 		if (updated) {
-			onSaved(updated);
-			setStatus('Saved');
+			saved(updated);
 		} else {
 			setStatus('Could not save. Try again.');
+		}
+	};
+
+	const removePhoto = async () => {
+		setStatus('saving');
+		const fd = new FormData();
+		fd.append('remove_profile_picture', 'true');
+		const updated = await authed('/api/auth/me/', { method: 'PATCH', body: fd });
+		if (updated) {
+			saved(updated);
+		} else {
+			setStatus('Could not remove the photo. Try again.');
 		}
 	};
 
 	return (
 		<main className="profile">
 			<form className="profile-card" onSubmit={save}>
-				<label className="avatar-pick">
-					{preview ? (
-						<img src={preview} alt="Profile" />
-					) : (
-						<span className="avatar">{initial}</span>
+				<div className="avatar-block">
+					<label className="avatar-pick">
+						{preview ? (
+							<img src={preview} alt="Profile" />
+						) : (
+							<span className="avatar">{initial}</span>
+						)}
+						<input
+							ref={inputRef}
+							type="file"
+							accept="image/*"
+							onChange={choose}
+							hidden
+						/>
+						<span className="pick-hint">Change photo</span>
+					</label>
+					{preview && (
+						<button
+							type="button"
+							className="avatar-remove"
+							onClick={removePhoto}
+							disabled={status === 'saving'}
+						>
+							Remove photo
+						</button>
 					)}
-					<input type="file" accept="image/*" onChange={choose} hidden />
-					<span className="pick-hint">Change photo</span>
-				</label>
+				</div>
 				<h1>{firstName || user.username}</h1>
 				<p className="mail">{user.email}</p>
 
@@ -100,7 +159,11 @@ function Profile({ user, onBack, onLogout, onSaved }) {
 						{status === 'saving' ? 'Saving…' : 'Save changes'}
 					</button>
 				</div>
-				{status && status !== 'saving' && <p className="note">{status}</p>}
+				{status && status !== 'saving' && (
+					<p className="note" role="status">
+						{status}
+					</p>
+				)}
 
 				<div className="profile-actions secondary">
 					<button className="button ghost" type="button" onClick={onBack}>

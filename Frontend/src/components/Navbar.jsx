@@ -1,41 +1,48 @@
 import './Navbar.css';
 
-function Navbar({ user, page, onNavigate }) {
+function Navbar({ user, page, onNavigate, onSignIn }) {
 	const initial = (user?.username || '?').charAt(0).toUpperCase();
+	const active = (name) => (page === name ? 'active' : '');
 
 	return (
 		<nav className="navbar">
-			<button type="button" className="logo" onClick={() => onNavigate('explore')}>
+			<button type="button" className="logo" onClick={() => onNavigate('home')}>
 				Raahi
 			</button>
-			{user && (
-				<div className="nav-right">
-					<div className="nav-links">
+			<div className="nav-right">
+				<div className="nav-links">
+					<button
+						type="button"
+						className={active('home')}
+						onClick={() => onNavigate('home')}
+					>
+						Plan a trip
+					</button>
+					<button
+						type="button"
+						className={active('explore')}
+						onClick={() => onNavigate('explore')}
+					>
+						Explore
+					</button>
+					{user ? (
 						<button
 							type="button"
-							className={page === 'explore' ? 'active' : ''}
-							onClick={() => onNavigate('explore')}
-						>
-							Explore
-						</button>
-						<button
-							type="button"
-							className={page === 'trips' ? 'active' : ''}
+							className={active('trips')}
 							onClick={() => onNavigate('trips')}
 						>
 							Trips
 						</button>
-						<button
-							type="button"
-							className={page === 'profile' ? 'active' : ''}
-							onClick={() => onNavigate('profile')}
-						>
-							Profile
+					) : (
+						<button type="button" className="nav-cta" onClick={onSignIn}>
+							Sign in
 						</button>
-					</div>
+					)}
+				</div>
+				{user && (
 					<button
 						type="button"
-						className="avatar"
+						className={`avatar${page === 'profile' ? ' active' : ''}`}
 						onClick={() => onNavigate('profile')}
 						aria-label="Open profile"
 					>
@@ -45,8 +52,8 @@ function Navbar({ user, page, onNavigate }) {
 							initial
 						)}
 					</button>
-				</div>
-			)}
+				)}
+			</div>
 		</nav>
 	);
 }

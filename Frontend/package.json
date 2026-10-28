@@ -1,7 +1,7 @@
 {
-  "name": "vite-react-starter",
+  "name": "raahi-frontend",
   "private": true,
-  "version": "0.0.0",
+  "version": "0.1.0",
   "type": "module",
   "scripts": {
     "dev": "vite",
@@ -10,7 +10,6 @@
     "preview": "vite preview"
   },
   "dependencies": {
-    "animejs": "^3.2.2",
     "esri-leaflet": "^3.0.19",
     "leaflet": "^1.9.4",
     "leaflet-routing-machine": "^3.2.12",

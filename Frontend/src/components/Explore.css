@@ -51,7 +51,7 @@
 
 .tabs button {
 	flex: 1;
-	min-height: 40px;
+	min-height: 44px;
 	border: none;
 	background: transparent;
 	color: var(--muted);

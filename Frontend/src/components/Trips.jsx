@@ -53,7 +53,7 @@ const when = (iso) =>
 
 const money = (cost) => (cost ? `₹${Number(cost).toLocaleString('en-IN')}` : '');
 
-function Trips() {
+function Trips({ initialPlanId }) {
 	const [plans, setPlans] = useState(null);
 	const [error, setError] = useState('');
 	const [creating, setCreating] = useState(false);
@@ -70,6 +70,13 @@ function Trips() {
 			if (!alive) return;
 			if (Array.isArray(data)) {
 				setPlans(data);
+				if (initialPlanId) {
+					const plan = data.find((p) => p.id === initialPlanId);
+					if (plan) {
+						setSelected(plan);
+						setForm(planForm(plan));
+					}
+				}
 			} else {
 				setPlans([]);
 				setError("Couldn't load your trips.");
@@ -78,7 +85,7 @@ function Trips() {
 		return () => {
 			alive = false;
 		};
-	}, []);
+	}, [initialPlanId]);
 
 	// clear success messages after a beat; keep errors visible
 	useEffect(() => {
@@ -338,7 +345,12 @@ function Trips() {
 											<div className="stop-main">
 												<strong>{it.name}</strong>
 												<span className="stop-meta">
-													{[when(it.time), money(it.cost), it.notes]
+													{[
+														it.details?.day ? `Day ${it.details.day}` : null,
+														when(it.time),
+														money(it.cost),
+														it.notes,
+													]
 														.filter(Boolean)
 														.join(' · ')}
 												</span>

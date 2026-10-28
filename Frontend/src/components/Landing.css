@@ -1,0 +1,692 @@
+.landing {
+	background: var(--bg);
+}
+
+.landing [id] {
+	scroll-margin-top: 4.75rem;
+}
+
+.landing .section-head {
+	max-width: 640px;
+	margin: 0 auto 2rem;
+	text-align: center;
+}
+
+.landing .section-head h2 {
+	margin-bottom: 0.5rem;
+}
+
+.landing .section-head > p:last-child {
+	color: var(--muted);
+	font-size: 0.95rem;
+	line-height: 1.6;
+}
+
+.kicker {
+	font-size: 0.72rem;
+	font-weight: 700;
+	letter-spacing: 0.1em;
+	text-transform: uppercase;
+	color: var(--primary);
+	margin-bottom: 0.4rem;
+}
+
+/* Generated itinerary */
+.itinerary {
+	width: min(1050px, 100%);
+	margin: 0 auto;
+	padding: 3.5rem 1.25rem 0.5rem;
+}
+
+.itinerary-head {
+	display: flex;
+	justify-content: space-between;
+	align-items: flex-start;
+	gap: 1rem;
+}
+
+.itinerary-head h2 {
+	font-size: clamp(1.6rem, 4vw, 2.2rem);
+	line-height: 1.2;
+	margin: 0.15rem 0 0.35rem;
+	word-break: break-word;
+}
+
+.itinerary-meta {
+	color: var(--muted);
+	font-size: 0.9rem;
+}
+
+.saved-pill {
+	flex: 0 0 auto;
+	padding: 0.4rem 0.8rem;
+	border-radius: 999px;
+	background: #e6f4ec;
+	color: #176b3a;
+	font-size: 0.75rem;
+	font-weight: 700;
+}
+
+.itinerary-summary {
+	max-width: 780px;
+	margin-top: 0.9rem;
+	color: #445b70;
+	font-size: 0.95rem;
+	line-height: 1.65;
+}
+
+.day-list {
+	display: grid;
+	gap: 1rem;
+	margin-top: 1.6rem;
+}
+
+.day-card {
+	background: #fff;
+	border: 1px solid var(--border);
+	border-radius: 16px;
+	overflow: hidden;
+	box-shadow: 0 4px 16px rgba(20, 41, 62, 0.04);
+}
+
+.day-head {
+	display: flex;
+	align-items: center;
+	flex-wrap: wrap;
+	gap: 0.75rem;
+	padding: 0.85rem 1.2rem;
+	background: var(--tint);
+	border-bottom: 1px solid var(--border);
+}
+
+.day-number {
+	font-size: 0.7rem;
+	font-weight: 700;
+	letter-spacing: 0.08em;
+	text-transform: uppercase;
+	color: var(--primary);
+}
+
+.day-head h3 {
+	font-size: 1rem;
+	font-weight: 700;
+}
+
+.day-stops {
+	list-style: none;
+}
+
+.day-stop {
+	display: grid;
+	grid-template-columns: 66px 1fr auto;
+	gap: 1rem;
+	padding: 1rem 1.2rem;
+	border-top: 1px solid var(--border);
+	align-items: start;
+}
+
+.day-stop:first-child {
+	border-top: none;
+}
+
+.stop-time {
+	font-size: 0.85rem;
+	font-weight: 700;
+	color: var(--primary);
+	font-variant-numeric: tabular-nums;
+	padding-top: 0.1rem;
+}
+
+.stop-cat {
+	display: block;
+	margin-bottom: 0.15rem;
+	font-size: 0.62rem;
+	font-weight: 700;
+	letter-spacing: 0.09em;
+	text-transform: uppercase;
+	color: var(--muted);
+}
+
+.stop-body strong {
+	font-size: 0.98rem;
+	line-height: 1.35;
+}
+
+.stop-body p {
+	margin-top: 0.25rem;
+	font-size: 0.86rem;
+	line-height: 1.55;
+	color: var(--muted);
+}
+
+.stop-cost {
+	font-size: 0.85rem;
+	font-weight: 700;
+	color: var(--ink);
+	white-space: nowrap;
+	padding-top: 0.1rem;
+}
+
+.itinerary-actions {
+	display: flex;
+	flex-wrap: wrap;
+	gap: 0.75rem;
+	margin-top: 1.5rem;
+}
+
+.ghost-button {
+	min-height: 44px;
+	padding: 0.7rem 1.4rem;
+	border: 1px solid var(--border);
+	border-radius: 999px;
+	background: #fff;
+	color: var(--ink);
+	font: inherit;
+	font-size: 0.92rem;
+	font-weight: 600;
+	cursor: pointer;
+}
+
+.ghost-button:hover {
+	background: var(--tint);
+	border-color: var(--primary);
+}
+
+/* Loading skeleton while the model works */
+.plan-loading {
+	width: min(1050px, 100%);
+	margin: 0 auto;
+	padding: 2.5rem 1.25rem 0;
+	display: grid;
+	grid-template-columns: repeat(3, 1fr);
+	gap: 1rem;
+}
+
+.loading-card {
+	display: grid;
+	gap: 0.65rem;
+	padding: 1.2rem;
+	background: #fff;
+	border: 1px solid var(--border);
+	border-radius: 16px;
+	animation: loading-pulse 1.4s ease-in-out infinite;
+}
+
+.loading-card span {
+	height: 11px;
+	border-radius: 999px;
+	background: var(--tint);
+}
+
+.loading-card span:first-child {
+	width: 55%;
+	height: 16px;
+	background: #dbe9f7;
+}
+
+.loading-card span:last-child {
+	width: 75%;
+}
+
+@keyframes loading-pulse {
+	50% {
+		opacity: 0.55;
+	}
+}
+
+/* Latest itineraries */
+.ideas {
+	padding-top: 4rem;
+}
+
+.idea-grid {
+	display: grid;
+	grid-template-columns: repeat(3, minmax(0, 1fr));
+	gap: 1rem;
+}
+
+.idea-card {
+	display: flex;
+	flex-direction: column;
+	align-items: stretch;
+	padding: 0;
+	background: #fff;
+	border: 1px solid var(--border);
+	border-radius: 16px;
+	overflow: hidden;
+	color: var(--ink);
+	font: inherit;
+	text-align: left;
+	cursor: pointer;
+	box-shadow: 0 4px 14px rgba(20, 41, 62, 0.04);
+	transition: transform 0.18s ease, border-color 0.18s ease, box-shadow 0.18s ease;
+}
+
+.idea-card:hover {
+	transform: translateY(-3px);
+	border-color: var(--primary);
+	box-shadow: 0 12px 26px rgba(20, 41, 62, 0.1);
+}
+
+.idea-card:disabled {
+	opacity: 0.65;
+	cursor: wait;
+	transform: none;
+}
+
+.idea-media {
+	position: relative;
+	display: block;
+	aspect-ratio: 16 / 10;
+	overflow: hidden;
+	background: var(--tint);
+}
+
+.idea-media img {
+	width: 100%;
+	height: 100%;
+	object-fit: cover;
+	display: block;
+	transition: transform 0.35s ease;
+}
+
+.idea-card:hover .idea-media img {
+	transform: scale(1.035);
+}
+
+.idea-days {
+	position: absolute;
+	left: 0.7rem;
+	bottom: 0.7rem;
+	padding: 0.3rem 0.65rem;
+	border-radius: 999px;
+	background: rgba(8, 30, 55, 0.82);
+	color: #fff;
+	font-size: 0.72rem;
+	font-weight: 700;
+}
+
+.idea-body {
+	flex: 1;
+	display: flex;
+	flex-direction: column;
+	align-items: flex-start;
+	gap: 0.3rem;
+	padding: 1rem 1.1rem 1.15rem;
+}
+
+.idea-meta {
+	font-size: 0.65rem;
+	font-weight: 700;
+	letter-spacing: 0.08em;
+	text-transform: uppercase;
+	color: var(--primary);
+}
+
+.idea-title {
+	font-size: 1.08rem;
+	font-weight: 700;
+	line-height: 1.3;
+}
+
+.idea-blurb {
+	font-size: 0.88rem;
+	line-height: 1.5;
+	color: var(--muted);
+}
+
+.idea-tags {
+	display: flex;
+	flex-wrap: wrap;
+	gap: 0.3rem;
+	margin-top: 0.15rem;
+}
+
+.idea-tags span {
+	padding: 0.2rem 0.5rem;
+	border-radius: 999px;
+	background: var(--tint);
+	color: var(--primary-dark);
+	font-size: 0.68rem;
+	font-weight: 600;
+}
+
+.idea-cta {
+	margin-top: auto;
+	padding-top: 0.65rem;
+	color: var(--primary);
+	font-size: 0.85rem;
+	font-weight: 700;
+}
+
+.idea-make {
+	justify-content: center;
+	padding: 1.5rem;
+	background: linear-gradient(150deg, var(--tint), #fff 65%);
+	border-style: dashed;
+	box-shadow: none;
+}
+
+.idea-make-body {
+	display: flex;
+	flex-direction: column;
+	align-items: flex-start;
+	gap: 0.4rem;
+}
+
+.idea-make .idea-cta {
+	margin-top: 0.5rem;
+	padding-top: 0;
+}
+
+/* How it works */
+.steps-band {
+	margin-top: 4rem;
+	padding: 3.5rem 1.25rem;
+	background: #fff;
+	border-top: 1px solid var(--border);
+	border-bottom: 1px solid var(--border);
+}
+
+.steps {
+	max-width: 1050px;
+	margin: 0 auto;
+}
+
+.step-grid {
+	display: grid;
+	grid-template-columns: repeat(3, 1fr);
+	gap: 1.5rem;
+	margin-top: 0.5rem;
+}
+
+.step-grid article {
+	text-align: center;
+}
+
+.step-number {
+	display: inline-flex;
+	align-items: center;
+	justify-content: center;
+	width: 46px;
+	height: 46px;
+	margin-bottom: 0.8rem;
+	border-radius: 50%;
+	background: var(--tint);
+	color: var(--primary);
+	font-size: 0.8rem;
+	font-weight: 700;
+}
+
+.step-grid h3 {
+	font-size: 1.02rem;
+	margin-bottom: 0.35rem;
+}
+
+.step-grid p {
+	max-width: 290px;
+	margin: 0 auto;
+	color: var(--muted);
+	font-size: 0.9rem;
+	line-height: 1.6;
+}
+
+.steps-cta {
+	margin-top: 2rem;
+	text-align: center;
+}
+
+/* About band */
+.about-band {
+	max-width: 1050px;
+	margin: 0 auto;
+	padding: 3.5rem 1.25rem 0;
+}
+
+.about-card {
+	display: flex;
+	align-items: center;
+	justify-content: space-between;
+	gap: 2rem;
+	padding: 2.5rem;
+	border-radius: 20px;
+	color: #fff;
+	background:
+		linear-gradient(100deg, rgba(9, 39, 74, 0.94), rgba(21, 96, 189, 0.78)),
+		url('/places/hawa-mahal.jpg') center / cover no-repeat;
+	box-shadow: 0 18px 40px rgba(13, 71, 161, 0.18);
+}
+
+.about-card .kicker {
+	color: #9ec9ff;
+}
+
+.about-card h2 {
+	font-size: clamp(1.45rem, 3.5vw, 2rem);
+	margin-bottom: 0.6rem;
+}
+
+.about-card p:last-child {
+	max-width: 560px;
+	color: rgba(255, 255, 255, 0.85);
+	font-size: 0.95rem;
+	line-height: 1.65;
+}
+
+.about-actions {
+	display: flex;
+	flex-direction: column;
+	gap: 0.6rem;
+	flex: 0 0 auto;
+}
+
+.button.light {
+	background: #fff;
+	color: var(--primary);
+}
+
+.button.light:hover {
+	background: var(--tint);
+}
+
+.about-link {
+	min-height: 44px;
+	padding: 0.6rem 1.4rem;
+	border: 1px solid rgba(255, 255, 255, 0.5);
+	border-radius: 999px;
+	background: transparent;
+	color: #fff;
+	font: inherit;
+	font-size: 0.92rem;
+	font-weight: 600;
+	cursor: pointer;
+}
+
+.about-link:hover {
+	background: rgba(255, 255, 255, 0.12);
+}
+
+/* Popular destinations */
+.dest-grid {
+	display: grid;
+	grid-template-columns: repeat(5, 1fr);
+	gap: 0.75rem;
+}
+
+.dest-card {
+	display: flex;
+	flex-direction: column;
+	align-items: flex-start;
+	gap: 0.1rem;
+	min-height: 94px;
+	padding: 0.9rem 1rem;
+	background: #fff;
+	border: 1px solid var(--border);
+	border-radius: 14px;
+	color: var(--ink);
+	font: inherit;
+	text-align: left;
+	cursor: pointer;
+	transition: background 0.15s ease, border-color 0.15s ease;
+}
+
+.dest-card:hover {
+	background: var(--tint);
+	border-color: var(--primary);
+}
+
+.dest-card strong {
+	font-size: 1rem;
+}
+
+.dest-card span {
+	font-size: 0.76rem;
+	color: var(--muted);
+}
+
+.dest-card em {
+	margin-top: auto;
+	padding-top: 0.35rem;
+	font-style: normal;
+	font-size: 0.7rem;
+	font-weight: 700;
+	color: var(--primary);
+}
+
+/* FAQ */
+.faq-list {
+	max-width: 760px;
+	margin: 0 auto;
+	border-top: 1px solid var(--border);
+}
+
+.faq-list details {
+	border-bottom: 1px solid var(--border);
+}
+
+.faq-list summary {
+	display: flex;
+	align-items: center;
+	justify-content: space-between;
+	gap: 1rem;
+	min-height: 52px;
+	padding: 0.85rem 0.25rem;
+	font-weight: 600;
+	font-size: 0.95rem;
+	cursor: pointer;
+	list-style: none;
+}
+
+.faq-list summary::-webkit-details-marker {
+	display: none;
+}
+
+.faq-list summary::after {
+	content: '+';
+	flex: 0 0 auto;
+	color: var(--primary);
+	font-size: 1.25rem;
+	font-weight: 400;
+}
+
+.faq-list details[open] summary::after {
+	content: '−';
+}
+
+.faq-list details p {
+	max-width: 680px;
+	padding: 0 0.25rem 1.1rem;
+	color: var(--muted);
+	font-size: 0.92rem;
+	line-height: 1.65;
+}
+
+@media (max-width: 900px) {
+	.idea-grid {
+		grid-template-columns: repeat(2, minmax(0, 1fr));
+	}
+
+	.dest-grid {
+		grid-template-columns: repeat(3, 1fr);
+	}
+}
+
+@media (max-width: 760px) {
+	.step-grid {
+		grid-template-columns: 1fr;
+		gap: 1.75rem;
+	}
+
+	.about-card {
+		flex-direction: column;
+		align-items: flex-start;
+		padding: 1.75rem;
+	}
+
+	.about-actions {
+		flex-direction: row;
+		flex-wrap: wrap;
+	}
+
+	.plan-loading {
+		grid-template-columns: 1fr;
+	}
+}
+
+@media (max-width: 620px) {
+	.idea-grid {
+		grid-template-columns: 1fr;
+	}
+
+	.ideas {
+		padding-top: 3rem;
+	}
+
+	.itinerary {
+		padding-top: 2.5rem;
+	}
+
+	.itinerary-head {
+		flex-direction: column;
+		gap: 0.5rem;
+	}
+
+	.day-stop {
+		grid-template-columns: 52px 1fr;
+		gap: 0.75rem;
+		padding: 0.9rem 1rem;
+	}
+
+	.stop-cost {
+		grid-column: 2;
+		padding-top: 0;
+	}
+
+	.dest-grid {
+		grid-template-columns: repeat(2, 1fr);
+	}
+
+	.steps-band {
+		margin-top: 3rem;
+		padding: 2.75rem 1.25rem;
+	}
+
+	.about-band {
+		padding-top: 2.75rem;
+	}
+}
+
+@media (max-width: 440px) {
+	.dest-grid {
+		grid-template-columns: 1fr;
+	}
+
+	.dest-card {
+		min-height: 76px;
+	}
+
+	.itinerary-actions .button,
+	.itinerary-actions .ghost-button {
+		width: 100%;
+	}
+}

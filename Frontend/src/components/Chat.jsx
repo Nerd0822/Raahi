@@ -29,7 +29,7 @@ function Chat({ open, onToggle, destination }) {
 			});
 			setMessages((m) => [
 				...m,
-				{ role: 'ai', text: data?.reply ?? 'Backend unreachable right now.' },
+				{ role: 'ai', text: data?.reply ?? 'The AI guide is unavailable right now.' },
 			]);
 		} catch {
 			setMessages((m) => [...m, { role: 'ai', text: 'Network hiccup — try again.' }]);
