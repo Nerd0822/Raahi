@@ -1,6 +1,29 @@
+# Secrets — one root .env for local dev and Compose; examples stay tracked.
 .env
 .env.*
-!**/.env.example
+!.env.example
 
+# Logs and OS/editor files
 *.log
 .DS_Store
+.idea/
+.vscode/
+
+# Python
+__pycache__/
+*.pyc
+.venv/
+.pytest_cache/
+.ruff_cache/
+*.egg-info/
+build/
+dist/
+
+# Django local artifacts
+*.sqlite3
+Backend/media/
+Backend/staticfiles/
+
+# Frontend
+Frontend/node_modules/
+*.local

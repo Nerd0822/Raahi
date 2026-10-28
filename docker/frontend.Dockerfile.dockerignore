@@ -1,6 +1,0 @@
-.git
-Backend
-Frontend/node_modules
-Frontend/dist
-Frontend/.env
-Frontend/.env.*

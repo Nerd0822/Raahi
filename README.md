@@ -37,29 +37,44 @@ historical context. India-first, but it plans international trips too.
 
 ```
 Raahi/
-├── Backend/          # Django + DRF
-│   ├── home/         #   project config (settings, urls)
-│   ├── api/          #   API app
-│   │   ├── llm.py    #     provider client, tool loop, itinerary prompt
-│   │   ├── tools.py  #     weather / search / Wikipedia + cache
-│   │   └── models.py #     Profile, Plan, PlanItem, ToolCache
-│   └── .env          #   secrets — never committed
-├── Frontend/         # React + Vite
-│   └── src/          #   components, places, shared API client
-└── docker/           # Compose, Dockerfiles, nginx, smoke test and .env.example
+├── Backend/              # Django + DRF
+│   ├── home/             #   project config (settings, urls)
+│   ├── api/              #   API app
+│   │   ├── llm.py        #     provider client, tool loop, itinerary prompt
+│   │   ├── tools.py      #     weather / search / Wikipedia + cache
+│   │   └── models.py     #     Profile, Plan, PlanItem, ToolCache
+│   └── requirements.txt  #   pip snapshot generated from uv.lock
+├── Frontend/             # React + Vite
+│   └── src/              #   components, places, shared API client
+├── docker/               # Dockerfile, nginx, entrypoint, smoke test
+├── compose.yaml          # Postgres, Redis, backend and nginx
+└── .env.example          # one env file; .gitignore and .dockerignore at root
 ```
 
 ## Development setup
 
-**Backend**
+**Backend** — from the repo root:
 
 ```bash
+cp .env.example .env             # one env file; edit it — see "Environment"
 cd Backend
 uv sync                          # create/sync .venv from pyproject+uv.lock
-cp .env.example .env             # then edit — see "Environment" below
 uv run manage.py migrate
 uv run manage.py runserver       # http://127.0.0.1:8000
 ```
+
+`pyproject.toml` and `uv.lock` are the source of truth. `Backend/requirements.txt`
+is a generated pip snapshot; pip users can instead run:
+
+```bash
+cd Backend
+python3.14 -m venv .venv && . .venv/bin/activate
+pip install -r requirements.txt
+```
+
+Regenerate the snapshot after dependency changes with
+`uv export --frozen --no-dev --no-emit-project --no-hashes --no-annotate --output-file requirements.txt`
+from `Backend/`.
 
 **Frontend**
 
@@ -71,30 +86,30 @@ npm run dev                      # http://localhost:5173
 
 ## Run with Docker
 
-The whole stack — nginx, Gunicorn, Postgres and Redis — runs from `docker/`.
+The whole stack — nginx, Gunicorn, Postgres and Redis — runs from the repo root.
 
 ```bash
-cp Backend/.env.example Backend/.env   # once, then edit
-cp docker/.env.example docker/.env
-docker compose -f docker/compose.yaml up -d --build
+cp .env.example .env              # once, then edit
+docker compose up -d --build
 # http://localhost:8080
 ```
 
-- **nginx** serves the built SPA, `/static/` and `/media/`, and proxies
-  `/api/` and `/admin/` to Django.
+- **`docker/Dockerfile`** is the only image definition. Compose builds its
+  `backend` target for Django and its `web` target for nginx plus the built SPA.
 - **backend** runs migrations and `collectstatic` on start, then Gunicorn.
 - **db** is Postgres 17; **redis** is Redis 7. Database, uploaded media and
   collected static files live in named volumes.
-- Change the public port with `WEB_PORT` in `docker/.env`.
+- Change the public port with `WEB_PORT` in `.env`.
 
-Stop the stack with `docker compose -f docker/compose.yaml down`. Add `-v`
-only when you also want to delete the database and uploaded files.
+Stop the stack with `docker compose down`. Add `-v` only when you also want to
+delete the database and uploaded files.
 
 **AI in Docker:** containers reach Ollama on the host through
-`host.docker.internal`, so run Ollama with `OLLAMA_HOST=0.0.0.0`. The Compose
-file defaults `LLM_BASE_URL` to `http://host.docker.internal:11434/v1`; set
-`LLM_BASE_URL` in `docker/.env` for a remote provider. Model and key still
-come from `Backend/.env`.
+`host.docker.internal`, so run Ollama with `OLLAMA_HOST=0.0.0.0`. Compose
+defaults the container's `LLM_BASE_URL` to
+`http://host.docker.internal:11434/v1`, while the `LLM_BASE_URL` in `.env`
+stays pointed at `127.0.0.1` for local dev. For a remote provider inside the
+container set `LLM_BASE_URL_DOCKER` in `.env`; the model and key stay the same.
 
 ## How the frontend talks to the backend
 
@@ -107,7 +122,8 @@ Docker, nginx does the same proxying.
 
 ## Environment
 
-`Backend/.env` (gitignored — see `Backend/.env.example` for every key):
+A single root `.env` (gitignored — see `.env.example` for every key) configures
+both local development and Compose. Django loads it from the repo root:
 
 ```
 SECRET_KEY=   # generate: uv run python -c "from django.core.management.utils import get_random_secret_key; print(get_random_secret_key())"
@@ -115,6 +131,8 @@ DEBUG=        # True in dev; never True in prod
 LLM_API_KEY=  # optional for local servers
 LLM_BASE_URL= # any OpenAI-compatible /v1 endpoint
 LLM_MODEL=    # required for the AI features
+WEB_PORT=     # Compose: public port, default 8080
+POSTGRES_*    # Compose: database name, user and password
 ```
 
 The default local setup is Ollama with the cloud model `gpt-oss:120b-cloud`:
@@ -130,10 +148,11 @@ changing the URL, model and key. Without `LLM_MODEL`, AI endpoints return 503
 and the UI reports that the guide is unavailable.
 
 Docker Compose injects `POSTGRES_*`, `REDIS_URL`, `ALLOWED_HOSTS` and
-`CSRF_TRUSTED_ORIGINS`. For local overrides, the backend also reads
-`POSTGRES_HOST`, `POSTGRES_DB`, `POSTGRES_USER`, `POSTGRES_PASSWORD`,
-`POSTGRES_PORT` and `REDIS_URL` from `Backend/.env`; with no `POSTGRES_HOST`
-it uses SQLite.
+`CSRF_TRUSTED_ORIGINS` into the backend container. For local overrides, the
+backend reads `POSTGRES_HOST`, `POSTGRES_DB`, `POSTGRES_USER`,
+`POSTGRES_PASSWORD`, `POSTGRES_PORT` and `REDIS_URL` from the same `.env`;
+with no `POSTGRES_HOST` it uses SQLite. In Docker, `LLM_BASE_URL_DOCKER`
+replaces `LLM_BASE_URL` for the container.
 
 ## AI tools and caching
 
@@ -178,7 +197,7 @@ avatar.
 ```bash
 cd Backend && uv run python manage.py test api   # 35 tests
 cd Frontend && npm run build && npm run lint
-docker compose -f docker/compose.yaml config
+docker compose config
 bash docker/smoke.sh                             # deployed stack, incl. avatar + AI
 ```
 

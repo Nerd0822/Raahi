@@ -5,7 +5,7 @@
 set -euo pipefail
 
 cd "$(dirname "$0")/.."
-compose=(docker compose -f docker/compose.yaml)
+compose=(docker compose)
 base="${BASE_URL:-http://localhost:8080}"
 email="smoke-$(date +%s)@example.com"
 password="not-a-common-password-123"

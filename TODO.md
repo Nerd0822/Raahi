@@ -52,11 +52,15 @@ Compose stack (nginx, Gunicorn, Postgres, Redis) is built and smoke-tested at
       remove, plans CRUD/validation, per-user isolation, plan-item ownership,
       LLM tool loop/limits, tool parsing, Redis/DB cache refill and outage
       tolerance, empty-result handling
-- [x] **Docker stack** — `docker/compose.yaml` with Postgres 17, Redis 7,
+- [x] **Docker stack** — root `compose.yaml` with Postgres 17, Redis 7,
       Django/Gunicorn and nginx; healthchecks, named volumes, `WEB_PORT`;
-      nginx serves the SPA, `/static/`, `/media/` and proxies `/api/` and
-      `/admin/`; backend entrypoint migrates and collects static; deployment
-      smoke script covers web, data, avatars and AI
+      one `docker/Dockerfile` builds the `backend` and `web` targets; nginx
+      serves the SPA, `/static/`, `/media/` and proxies `/api/` and `/admin/`;
+      `docker/entrypoint.sh` migrates and collects static; deployment smoke
+      script covers web, data, avatars and AI
+- [x] **Single-file config** — one root `.gitignore`, `.dockerignore`,
+      `.env`/`.env.example` and `compose.yaml`; one Dockerfile and one
+      entrypoint; `Backend/requirements.txt` is a generated pip snapshot
 - [x] **Deployed E2E** — botcan run through signup, AI itinerary, Trips,
       profile editing and Explore chat at `http://localhost:8080`; avatar
       upload/replace/remove and 390px layout verified separately
@@ -109,10 +113,9 @@ Compose stack (nginx, Gunicorn, Postgres, Redis) is built and smoke-tested at
 
 - Dev flow: `cd Backend && uv run manage.py runserver` +
   `cd Frontend && npm run dev`
-- Docker flow: `docker compose -f docker/compose.yaml up -d --build` from the
-  repo root, then `http://localhost:8080`
-- Secrets: `Backend/.env` (see `.env.example`); Compose settings in
-  `docker/.env` (see `docker/.env.example`)
+- Docker flow: `docker compose up -d --build` from the repo root, then
+  `http://localhost:8080`
+- Secrets: one root `.env` (see `.env.example`) for both dev and Compose
 - Dev-scale free services: Nominatim (search), OSRM demo (routing),
   Open-Meteo (weather), DuckDuckGo HTML (search), Wikipedia REST — cache or
   self-host before real traffic

@@ -1,7 +1,7 @@
 """OpenAI-compatible chat client using only the standard library.
 
 Works with any provider that exposes `/chat/completions` (OpenAI, OpenRouter,
-Groq, Together, local Ollama, …). Configure via `Backend/.env`:
+Groq, Together, local Ollama, …). Configure via the root `.env`:
 
     LLM_API_KEY=...
     LLM_BASE_URL=https://api.openai.com/v1
@@ -88,7 +88,7 @@ def _complete(messages, temperature, timeout, json_mode=False, tools=None):
     model = os.getenv("LLM_MODEL", "").strip()
     key = os.getenv("LLM_API_KEY", "").strip()
     if not model:
-        raise LLMNotConfigured("Set LLM_MODEL in Backend/.env to enable the AI guide.")
+        raise LLMNotConfigured("Set LLM_MODEL in .env to enable the AI guide.")
 
     conversation = list(messages)
     headers = {"Content-Type": "application/json"}
