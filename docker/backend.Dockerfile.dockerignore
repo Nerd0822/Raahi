@@ -1,0 +1,10 @@
+.git
+Frontend
+Backend/.venv
+Backend/.env
+Backend/db.sqlite3
+Backend/media
+Backend/staticfiles
+Backend/.pytest_cache
+Backend/**/__pycache__
+Backend/**/*.pyc

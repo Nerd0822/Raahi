@@ -1,16 +1,30 @@
-# React + Vite
+# Raahi frontend
 
-This template provides a minimal setup to get React working in Vite with HMR and some Oxlint rules.
+React 19 + Vite. The landing page is prompt-first: a visitor describes a trip,
+signs in once, and the generated itinerary appears inline and is saved to Trips.
 
-Currently, two official plugins are available:
+```bash
+npm install
+npm run dev     # http://localhost:5173
+npm run build
+npm run lint
+```
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Oxc](https://oxc.rs)
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/)
+The dev server proxies `/api` and `/media` to `http://127.0.0.1:8000`, so run
+the Django backend alongside it. See the root `README.md` for backend setup,
+environment variables and the AI tool/caching model.
 
-## React Compiler
+## Layout
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
+- `src/App.jsx` — homepage-first shell and auth handoff
+- `src/components/Landing.jsx` — hero, generated result, curated starts, how it
+  works, about, destinations, FAQ and footer
+- `src/components/Hero.jsx` — prompt form and example trips
+- `src/components/Trips.jsx` — saved plan editing and day-by-day stops
+- `src/components/Explore.jsx` — Leaflet map, search and routing
+- `src/components/Chat.jsx` — AI travel chat drawer
+- `src/places.js` — curated landing destinations and starter prompts
+- `src/auth.js` — shared authed fetch client with one refresh retry
 
-## Expanding the Oxlint configuration
-
-If you are developing a production application, we recommend using TypeScript with type-aware lint rules enabled. Check out the [TS template](https://github.com/vitejs/vite/tree/main/packages/create-vite/template-react-ts) for information on how to integrate TypeScript and Oxlint's TypeScript related rules in your project.
+Container builds, nginx and Compose live in `../docker/`. See the root
+`README.md` for the Docker run command.
