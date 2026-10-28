@@ -26,5 +26,6 @@ environment variables and the AI tool/caching model.
 - `src/places.js` — curated landing destinations and starter prompts
 - `src/auth.js` — shared authed fetch client with one refresh retry
 
-Container builds, nginx and Compose live in `../docker/` and the repo-root
-`compose.yaml`. See the root `README.md` for the Docker run command.
+Container builds, nginx and Compose live at the repo root: `Dockerfile`,
+`nginx/nginx.conf` and `docker-compose.yml`. See the root `README.md` for the
+Docker run command.

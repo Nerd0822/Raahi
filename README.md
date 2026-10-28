@@ -46,8 +46,11 @@ Raahi/
 │   └── requirements.txt  #   pip snapshot generated from uv.lock
 ├── Frontend/             # React + Vite
 │   └── src/              #   components, places, shared API client
-├── docker/               # Dockerfile, nginx, entrypoint, smoke test
-├── compose.yaml          # Postgres, Redis, backend and nginx
+├── nginx/                # nginx config for the deployed SPA and API proxy
+├── Dockerfile            # one multi-target image: backend + web
+├── docker-compose.yml    # Postgres, Redis, backend and nginx
+├── entrypoint.sh         # migrations + collectstatic, then Gunicorn
+├── smoke.sh              # deployed end-to-end test
 └── .env.example          # one env file; .gitignore and .dockerignore at root
 ```
 
@@ -94,8 +97,9 @@ docker compose up -d --build
 # http://localhost:8080
 ```
 
-- **`docker/Dockerfile`** is the only image definition. Compose builds its
+- **`Dockerfile`** is the only image definition. Compose builds its
   `backend` target for Django and its `web` target for nginx plus the built SPA.
+  The nginx config lives in `nginx/nginx.conf`.
 - **backend** runs migrations and `collectstatic` on start, then Gunicorn.
 - **db** is Postgres 17; **redis** is Redis 7. Database, uploaded media and
   collected static files live in named volumes.
@@ -198,7 +202,7 @@ avatar.
 cd Backend && uv run python manage.py test api   # 35 tests
 cd Frontend && npm run build && npm run lint
 docker compose config
-bash docker/smoke.sh                             # deployed stack, incl. avatar + AI
+bash smoke.sh                                    # deployed stack, incl. avatar + AI
 ```
 
 Browser flows verified in Firefox at desktop and 390px: landing → prompt →

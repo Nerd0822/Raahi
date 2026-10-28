@@ -4,7 +4,7 @@
 # SKIP_AI=1) one AI chat round trip.
 set -euo pipefail
 
-cd "$(dirname "$0")/.."
+cd "$(dirname "$0")"
 compose=(docker compose)
 base="${BASE_URL:-http://localhost:8080}"
 email="smoke-$(date +%s)@example.com"

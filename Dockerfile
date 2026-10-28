@@ -28,7 +28,7 @@ COPY Backend/pyproject.toml Backend/uv.lock ./
 RUN uv sync --frozen --no-dev
 
 COPY Backend/ .
-COPY docker/entrypoint.sh /app/docker-entrypoint.sh
+COPY entrypoint.sh /app/docker-entrypoint.sh
 
 RUN mkdir -p /app/staticfiles /app/media \
     && useradd --create-home --uid 1000 app \
@@ -52,7 +52,7 @@ CMD ["gunicorn", "home.wsgi:application", \
 # Static frontend + reverse proxy. Compose builds this target as `nginx`.
 FROM nginx:1.27-alpine AS web
 
-COPY docker/nginx.conf /etc/nginx/conf.d/default.conf
+COPY nginx/nginx.conf /etc/nginx/conf.d/default.conf
 COPY --from=frontend /app/dist /usr/share/nginx/html
 
 EXPOSE 80
