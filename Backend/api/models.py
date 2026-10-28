@@ -60,21 +60,23 @@ class PlanItem(models.Model):
         return f"{self.name} ({self.category})"
 
 
-class PlaceInfo(models.Model):
-    """Shared AI-answer cache. One row per destination + category."""
+class ToolCache(models.Model):
+    """Cached results from the AI's external tools (weather, search, wiki)."""
 
-    destination = models.CharField(max_length=200)
-    category = models.CharField(max_length=20, choices=PlanItem.Category.choices)
+    tool = models.CharField(max_length=40)
+    query = models.CharField(max_length=300)
     data = models.JSONField()
+    expires_at = models.DateTimeField()
+    created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
 
     class Meta:
         constraints = [
             models.UniqueConstraint(
-                fields=["destination", "category"],
-                name="unique_destination_category",
+                fields=["tool", "query"],
+                name="unique_tool_query",
             )
         ]
 
     def __str__(self):
-        return f"{self.destination} / {self.category}"
+        return f"{self.tool}: {self.query}"
