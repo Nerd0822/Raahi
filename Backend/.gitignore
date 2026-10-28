@@ -7,10 +7,15 @@ db.sqlite3
 # Uploaded media (dev)
 media/
 
+# Collected static files (dev; Docker uses a volume)
+staticfiles/
+
 # Python
 .venv/
 __pycache__/
 *.pyc
+.pytest_cache/
+.ruff_cache/
 
 # Python build stuff
 *.egg-info/

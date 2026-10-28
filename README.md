@@ -46,7 +46,7 @@ Raahi/
 │   └── .env          #   secrets — never committed
 ├── Frontend/         # React + Vite
 │   └── src/          #   components, places, shared API client
-└── docker/           # Compose, Dockerfiles, nginx and .env.example
+└── docker/           # Compose, Dockerfiles, nginx, smoke test and .env.example
 ```
 
 ## Development setup

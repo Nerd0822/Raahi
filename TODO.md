@@ -100,7 +100,10 @@ Compose stack (nginx, Gunicorn, Postgres, Redis) is built and smoke-tested at
 - [ ] **TLS and backups** — put the Compose stack behind a TLS terminator,
       restrict Postgres/Redis to the internal network, and back up the
       `postgres_data` and `media_data` volumes
-- [ ] **Remote repo** — no origin configured yet; push to GitHub
+- [ ] **Push to GitHub** — `origin` is configured
+      (`https://github.com/Nerd0822/Raahi.git`) and `main` tracks
+      `origin/master`, but the push is still pending because this machine has
+      no stored GitHub credentials. Run `git push` from the repo root.
 
 ## Notes
 
