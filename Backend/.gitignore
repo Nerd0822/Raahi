@@ -4,6 +4,9 @@
 # Database
 db.sqlite3
 
+# Uploaded media (dev)
+media/
+
 # Python
 .venv/
 __pycache__/

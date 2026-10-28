@@ -1,4 +1,5 @@
 import os
+from datetime import timedelta
 from pathlib import Path
 
 from dotenv import load_dotenv
@@ -113,6 +114,11 @@ USE_TZ = True
 
 STATIC_URL = "static/"
 
+# Uploaded media (profile pictures). Django serves these in DEBUG via
+# home/urls.py; the Vite dev server proxies /media like /api.
+MEDIA_URL = "/media/"
+MEDIA_ROOT = BASE_DIR / "media"
+
 
 # Email
 # https://docs.djangoproject.com/en/6.1/topics/email/#topic-email-configuration
@@ -123,6 +129,7 @@ MAILERS = {
     },
 }
 
+AUTH_USER_MODEL = "api.Profile"
 
 # CORS
 # https://github.com/adamchainz/django-cors-headers#readme
@@ -135,12 +142,14 @@ CORS_ALLOWED_ORIGINS = [
 
 # DRF
 # https://www.django-rest-framework.org/api-guide/settings/
-
-REST_FRAMEWORK = {}
-
-
-CORS_ALLOWED_ORIGINS = ["http://localhost:5173", "http://127.0.0.1:5173"]
-
 REST_FRAMEWORK = {
-    # left intentionally minimal for now, grows with features
+    "DEFAULT_AUTHENTICATION_CLASSES": (
+        "rest_framework_simplejwt.authentication.JWTAuthentication",
+    ),
 }
+
+SIMPLE_JWT = {
+    "ACCESS_TOKEN_LIFETIME": timedelta(minutes=15),
+    "REFRESH_TOKEN_LIFETIME": timedelta(days=7),
+}
+
